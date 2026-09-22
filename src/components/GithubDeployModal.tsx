@@ -27,6 +27,10 @@ git branch -M main
 git remote add origin https://github.com/<USERNAME>/<NAMA-REPO>.git
 git push -u origin main`;
 
+  const gitUpdateCommands = `git add .
+git commit -m "Perbarui alur kerja GitHub Pages"
+git push`;
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-900/60 backdrop-blur-xs overflow-y-auto">
       <div className="bg-white rounded-2xl max-w-2xl w-full border border-slate-200 shadow-2xl overflow-hidden my-auto max-h-[90vh] flex flex-col">
@@ -97,6 +101,24 @@ git push -u origin main`;
                   {copiedCode === "git" ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
                   <span>{copiedCode === "git" ? "Disalin!" : "Salin"}</span>
                 </button>
+              </div>
+
+              {/* If already pushed before */}
+              <div className="pt-1">
+                <span className="text-[11px] text-slate-500 font-medium">Jika repository sudah pernah dibuat/di-push sebelumnya:</span>
+                <div className="relative mt-1">
+                  <pre className="p-2.5 bg-slate-100 text-slate-800 border border-slate-200 rounded-lg font-mono text-[11px] overflow-x-auto">
+                    {gitUpdateCommands}
+                  </pre>
+                  <button
+                    type="button"
+                    onClick={() => handleCopy("update", gitUpdateCommands)}
+                    className="absolute top-2 right-2 px-2 py-0.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded text-[10px] font-mono flex items-center gap-1 cursor-pointer transition-colors shadow-2xs"
+                  >
+                    {copiedCode === "update" ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3 text-slate-500" />}
+                    <span>{copiedCode === "update" ? "Disalin!" : "Salin"}</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

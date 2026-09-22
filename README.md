@@ -28,6 +28,12 @@ git branch -M main
 git remote add origin https://github.com/<USERNAME>/<NAMA-REPO>.git
 git push -u origin main
 ```
+*Jika Anda sudah pernah membuat/mendorong repository sebelumnya, cukup jalankan:*
+```bash
+git add .
+git commit -m "Perbarui alur kerja deploy GitHub Pages"
+git push
+```
 
 ### Langkah 3: Aktifkan GitHub Pages di Repository
 1. Buka repository Anda di GitHub.
