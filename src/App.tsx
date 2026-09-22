@@ -181,11 +181,16 @@ export default function App() {
 
       // Try server API first (active in local dev, container, or full-stack deployment)
       try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000);
+
         const response = await fetch("/api/vector/generate-batch", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(options)
+          body: JSON.stringify(options),
+          signal: controller.signal
         });
+        clearTimeout(timeoutId);
 
         if (response.ok) {
           const data = await response.json();
@@ -193,8 +198,8 @@ export default function App() {
             createdAssets = data.assets;
           }
         }
-      } catch {
-        // Server unreachable or static environment (e.g. GitHub Pages)
+      } catch (e) {
+        console.warn("Server generation did not complete, falling back to client-side vector engine:", e);
       }
 
       // If server is not present (GitHub Pages static hosting), run client-side vector engine

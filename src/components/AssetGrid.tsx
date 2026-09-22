@@ -86,7 +86,7 @@ export const AssetGrid: React.FC<AssetGridProps> = ({
 
                 {/* SVG Render */}
                 <div
-                  className="relative z-10 w-full h-full flex items-center justify-center transition-transform duration-300 group-hover:scale-105"
+                  className="relative z-10 w-full h-full flex items-center justify-center transition-transform duration-300 group-hover:scale-105 [&>svg]:w-full [&>svg]:h-full [&>svg]:max-w-full [&>svg]:max-h-full [&>svg]:object-contain [&>svg]:block pointer-events-none"
                   dangerouslySetInnerHTML={{ __html: asset.svgCode }}
                 />
 

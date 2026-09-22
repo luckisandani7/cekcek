@@ -194,7 +194,7 @@ export const VectorPreviewModal: React.FC<VectorPreviewModalProps> = ({
                 }
               >
                 <div
-                  className="w-full h-full flex items-center justify-center select-none"
+                  className="w-full h-full flex items-center justify-center select-none [&>svg]:w-full [&>svg]:h-full [&>svg]:max-w-full [&>svg]:max-h-full [&>svg]:object-contain [&>svg]:block"
                   dangerouslySetInnerHTML={{ __html: asset.svgCode }}
                 />
               </div>

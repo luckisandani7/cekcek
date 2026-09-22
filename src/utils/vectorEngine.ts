@@ -131,6 +131,76 @@ function generateProceduralSvg(
 </svg>`;
   }
 
+  // Rocket / Startup
+  if (p.includes("roket") || p.includes("rocket") || p.includes("startup") || p.includes("launch")) {
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <defs>
+    <linearGradient id="bg_${index}" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <linearGradient id="body_${index}" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#E2E8F0"/>
+    </linearGradient>
+    <linearGradient id="flame_${index}" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#EF4444"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="800" rx="32" fill="url(#bg_${index})"/>
+  <!-- Stars -->
+  <circle cx="200" cy="180" r="3" fill="#FFFFFF" opacity="0.8"/>
+  <circle cx="620" cy="240" r="4" fill="#FFFFFF" opacity="0.7"/>
+  <circle cx="280" cy="600" r="3" fill="#FFFFFF" opacity="0.6"/>
+  <circle cx="650" cy="550" r="2" fill="#FFFFFF" opacity="0.8"/>
+  <circle cx="400" cy="400" r="260" fill="${c1}" opacity="0.15"/>
+  <!-- Exhaust Flame -->
+  <path d="M 370 540 Q 400 680, 400 700 Q 400 680, 430 540 Z" fill="url(#flame_${index})"/>
+  <path d="M 385 540 Q 400 630, 400 650 Q 400 630, 415 540 Z" fill="#FEF08A"/>
+  <!-- Rocket Fins -->
+  <path d="M 350 450 L 290 530 L 350 520 Z" fill="${c4}"/>
+  <path d="M 450 450 L 510 530 L 450 520 Z" fill="${c4}"/>
+  <!-- Rocket Body -->
+  <path d="M 400 180 C 470 300, 460 520, 440 540 L 360 540 C 340 520, 330 300, 400 180 Z" fill="url(#body_${index})"/>
+  <!-- Nose Cone -->
+  <path d="M 400 180 C 430 230, 435 270, 400 270 C 365 270, 370 230, 400 180 Z" fill="${c4}"/>
+  <!-- Porthole Window -->
+  <circle cx="400" cy="350" r="36" fill="${c1}"/>
+  <circle cx="400" cy="350" r="26" fill="#38BDF8"/>
+  <circle cx="408" cy="342" r="8" fill="#FFFFFF" opacity="0.8"/>
+</svg>`;
+  }
+
+  // Plant / Monstera
+  if (p.includes("tanaman") || p.includes("plant") || p.includes("monstera") || p.includes("daun") || p.includes("bunga") || p.includes("flower")) {
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
+  <defs>
+    <linearGradient id="bg_${index}" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F0FDF4"/>
+      <stop offset="100%" stop-color="#DCFCE7"/>
+    </linearGradient>
+    <linearGradient id="leaf_${index}" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="800" rx="32" fill="url(#bg_${index})"/>
+  <circle cx="400" cy="400" r="260" fill="#BBF7D0" opacity="0.4"/>
+  <!-- Ceramic Pot -->
+  <path d="M 330 520 L 470 520 L 450 670 C 450 690, 350 690, 350 670 Z" fill="#EA580C"/>
+  <ellipse cx="400" cy="520" rx="70" ry="16" fill="#C2410C"/>
+  <ellipse cx="400" cy="520" rx="60" ry="12" fill="#78350F"/>
+  <!-- Stem -->
+  <path d="M 400 520 Q 380 380, 400 240" fill="none" stroke="#065F46" stroke-width="12" stroke-linecap="round"/>
+  <!-- Leaves -->
+  <path d="M 400 360 C 310 320, 260 220, 380 180 C 420 250, 420 320, 400 360 Z" fill="url(#leaf_${index})"/>
+  <path d="M 400 320 C 490 280, 540 180, 420 140 C 380 210, 380 280, 400 320 Z" fill="#059669"/>
+  <path d="M 390 440 C 300 420, 240 330, 340 300 C 380 360, 385 410, 390 440 Z" fill="#10B981"/>
+  <path d="M 405 420 C 500 400, 560 310, 460 280 C 420 340, 415 390, 405 420 Z" fill="#34D399"/>
+</svg>`;
+  }
+
   // Modern Geometric Vector Representation
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800">
   <defs>

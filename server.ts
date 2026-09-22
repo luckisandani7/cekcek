@@ -42,19 +42,23 @@ async function startServer() {
       const safeCount = Math.max(1, Math.min(10, Number(count) || 3));
       const cleanPrompt = objectPrompt.trim();
 
-      console.log(`[Batch Generation] Generating ${safeCount} vectors for: "${cleanPrompt}"`);
+      console.log(`[Batch Generation] Generating ${safeCount} vectors in parallel for: "${cleanPrompt}"`);
 
-      const generatedAssets: GeneratedVectorAsset[] = [];
+      // Run vector generation in parallel for maximum speed
+      const variationIndices = Array.from({ length: safeCount }, (_, i) => i);
+      const results = await Promise.all(
+        variationIndices.map((i) =>
+          generateSingleVectorWithGemini(
+            cleanPrompt,
+            styleId,
+            paletteId,
+            i,
+            safeCount
+          )
+        )
+      );
 
-      for (let i = 0; i < safeCount; i++) {
-        const singleResult = await generateSingleVectorWithGemini(
-          cleanPrompt,
-          styleId,
-          paletteId,
-          i,
-          safeCount
-        );
-
+      const generatedAssets: GeneratedVectorAsset[] = results.map((singleResult, i) => {
         // Convert generated SVG to standard PostScript EPS-10
         const epsCode = convertSvgToEps(singleResult.svgCode, {
           title: singleResult.metadata.title,
@@ -63,7 +67,7 @@ async function startServer() {
           height: 800
         });
 
-        const asset: GeneratedVectorAsset = {
+        return {
           id: `vec_${Date.now()}_${i}_${Math.random().toString(36).substring(2, 7)}`,
           filename: singleResult.metadata.filename,
           prompt: cleanPrompt,
@@ -75,9 +79,7 @@ async function startServer() {
           createdAt: new Date().toISOString(),
           uploadStatus: "idle"
         };
-
-        generatedAssets.push(asset);
-      }
+      });
 
       return res.json({
         success: true,
