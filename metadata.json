@@ -1,0 +1,6 @@
+{
+  "name": "VectorStock AI - Vector Generator & Adobe Stock Submitter",
+  "description": "Generator gambar vector otomatis (SVG & EPS) dari teks objek dengan Adobe Stock metadata generator dan integrasi upload massal.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
