@@ -1,10 +1,11 @@
 import React from "react";
-import { Sparkles, Layers, BookOpen, UploadCloud, Download, CheckCircle2 } from "lucide-react";
+import { Sparkles, Layers, BookOpen, UploadCloud, Download, CheckCircle2, Github } from "lucide-react";
 
 interface HeaderProps {
   assetCount: number;
   onOpenSftpModal: () => void;
   onOpenGuideModal: () => void;
+  onOpenGithubModal: () => void;
   onDownloadAllZip: () => void;
   isDownloadingZip: boolean;
 }
@@ -13,6 +14,7 @@ export const Header: React.FC<HeaderProps> = ({
   assetCount,
   onOpenSftpModal,
   onOpenGuideModal,
+  onOpenGithubModal,
   onDownloadAllZip,
   isDownloadingZip
 }) => {
@@ -38,10 +40,23 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          {/* GitHub Pages Deploy button */}
+          <button
+            id="btn-header-github-pages"
+            type="button"
+            onClick={onOpenGithubModal}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium text-slate-800 hover:text-slate-950 bg-slate-100 hover:bg-slate-200 border border-slate-300/80 rounded-lg transition-colors cursor-pointer"
+            title="Panduan Deploy ke GitHub Pages"
+          >
+            <Github className="w-4 h-4 text-slate-700" />
+            <span className="hidden md:inline">Deploy GitHub Pages</span>
+          </button>
+
           {/* Guide button */}
           <button
             id="btn-header-guide"
+            type="button"
             onClick={onOpenGuideModal}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80 rounded-lg transition-colors cursor-pointer"
             title="Panduan Lengkap Adobe Stock Contributor"
@@ -53,6 +68,7 @@ export const Header: React.FC<HeaderProps> = ({
           {/* SFTP Upload modal trigger */}
           <button
             id="btn-header-sftp"
+            type="button"
             onClick={onOpenSftpModal}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium text-blue-700 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg transition-colors cursor-pointer"
           >
@@ -64,6 +80,7 @@ export const Header: React.FC<HeaderProps> = ({
           {assetCount > 0 && (
             <button
               id="btn-header-zip"
+              type="button"
               onClick={onDownloadAllZip}
               disabled={isDownloadingZip}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm font-medium text-white bg-slate-900 hover:bg-slate-800 rounded-lg shadow-xs transition-colors cursor-pointer disabled:opacity-60"

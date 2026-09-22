@@ -6,10 +6,12 @@ import { MetadataTable } from "./components/MetadataTable";
 import { AdobeStockModal } from "./components/AdobeStockModal";
 import { VectorPreviewModal } from "./components/VectorPreviewModal";
 import { GuideModal } from "./components/GuideModal";
+import { GithubDeployModal } from "./components/GithubDeployModal";
 import { GeneratedVectorAsset, AdobeStockMetadata } from "./types";
 import { convertSvgToEps } from "./utils/epsConverter";
 import { generateAdobeStockCsv, downloadCsvFile } from "./utils/csvGenerator";
 import { downloadBatchZip } from "./utils/zipExport";
+import { generateVectorsClientSide } from "./utils/vectorEngine";
 import { Sparkles, Layers, Download, UploadCloud, CheckCircle2, AlertCircle } from "lucide-react";
 
 // Pre-seeded starter vector assets so user can test immediate downloads and metadata
@@ -153,6 +155,7 @@ export default function App() {
   // Modals
   const [isSftpModalOpen, setIsSftpModalOpen] = useState(false);
   const [isGuideModalOpen, setIsGuideModalOpen] = useState(false);
+  const [isGithubModalOpen, setIsGithubModalOpen] = useState(false);
   const [previewAsset, setPreviewAsset] = useState<GeneratedVectorAsset | null>(null);
 
   // Notification Toast
@@ -174,26 +177,39 @@ export default function App() {
     setCurrentProgress({ current: 1, total: options.count });
 
     try {
-      const response = await fetch("/api/vector/generate-batch", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(options)
-      });
+      let createdAssets: GeneratedVectorAsset[] | null = null;
 
-      const data = await response.json();
+      // Try server API first (active in local dev, container, or full-stack deployment)
+      try {
+        const response = await fetch("/api/vector/generate-batch", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(options)
+        });
 
-      if (data.success && Array.isArray(data.assets)) {
-        // Prepend new assets
-        setAssets((prev) => [...data.assets, ...prev]);
-        // Auto-select newly generated assets
-        setSelectedIds(data.assets.map((a: any) => a.id));
-        showToast(
-          `Sukses membuat ${data.assets.length} gambar vektor & metadata Adobe Stock!`,
-          "success"
-        );
-      } else {
-        showToast(data.error || "Gagal membuat gambar vektor.", "error");
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && Array.isArray(data.assets) && data.assets.length > 0) {
+            createdAssets = data.assets;
+          }
+        }
+      } catch {
+        // Server unreachable or static environment (e.g. GitHub Pages)
       }
+
+      // If server is not present (GitHub Pages static hosting), run client-side vector engine
+      if (!createdAssets || createdAssets.length === 0) {
+        createdAssets = generateVectorsClientSide(options);
+      }
+
+      // Prepend new assets
+      setAssets((prev) => [...createdAssets!, ...prev]);
+      // Auto-select newly generated assets
+      setSelectedIds(createdAssets.map((a) => a.id));
+      showToast(
+        `Sukses membuat ${createdAssets.length} gambar vektor & metadata Adobe Stock!`,
+        "success"
+      );
     } catch (err: any) {
       console.error(err);
       showToast(`Terjadi kesalahan: ${err.message}`, "error");
@@ -360,6 +376,7 @@ export default function App() {
         assetCount={assets.length}
         onOpenSftpModal={() => setIsSftpModalOpen(true)}
         onOpenGuideModal={() => setIsGuideModalOpen(true)}
+        onOpenGithubModal={() => setIsGithubModalOpen(true)}
         onDownloadAllZip={handleDownloadAllZip}
         isDownloadingZip={isDownloadingZip}
       />
@@ -450,6 +467,11 @@ export default function App() {
       <GuideModal
         isOpen={isGuideModalOpen}
         onClose={() => setIsGuideModalOpen(false)}
+      />
+
+      <GithubDeployModal
+        isOpen={isGithubModalOpen}
+        onClose={() => setIsGithubModalOpen(false)}
       />
     </div>
   );
